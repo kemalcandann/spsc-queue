@@ -1,6 +1,7 @@
 #include "latency_benchmark.h"
 #include "throughput_benchmark.h"
 #include "benchmark_config.h"
+#include "tsc.h"
 
 #include <algorithm>
 #include <cstdint>
@@ -53,6 +54,12 @@ int main() {
         << "Throughput Queue Size : "
         << benchmark::ThroughputQueueCapacity << '\n';
 
+    const auto tsc_calibration = calibrate_tsc();
+    std::cout << std::fixed << std::setprecision(6)
+              << "TSC Frequency         : "
+              << tsc_calibration.ticks_per_second / 1e9
+              << " GHz\n";          
+
     std::cout << "=========================================================\n\n";
 
 
@@ -75,8 +82,7 @@ int main() {
 
     std::vector<LatencyStats> latency_runs;
 
-    latency_runs.reserve(benchmark::Repetitions);
-
+    latency_runs.reserve(benchmark::Repetitions);  
 
     for (size_t run = 1; run <= benchmark::Repetitions; ++run) {
         const LatencyStats stats = run_latency_once();
@@ -89,37 +95,37 @@ int main() {
             << "  Mean    : "
             << std::fixed
             << std::setprecision(1)
-            << stats.mean
+            << format_latency(stats.mean, tsc_calibration)
             << " TSC ticks\n";
 
         std::cout
             << "  P50     : "
-            << stats.p50
+            << format_latency(stats.p50, tsc_calibration)
             << '\n';
 
         std::cout
             << "  P90     : "
-            << stats.p90
+            << format_latency(stats.p90, tsc_calibration)
             << '\n';
 
         std::cout
             << "  P99     : "
-            << stats.p99
+            << format_latency(stats.p99, tsc_calibration)
             << '\n';
 
         std::cout
             << "  P99.9   : "
-            << stats.p999
+            << format_latency(stats.p999, tsc_calibration)
             << '\n';
 
         std::cout
             << "  P99.99  : "
-            << stats.p9999
+            << format_latency(stats.p9999, tsc_calibration)
             << '\n';
 
         std::cout
             << "  Max     : "
-            << stats.max
+            << format_latency(stats.max, tsc_calibration)
             << '\n';
 
         std::cout
@@ -164,37 +170,37 @@ int main() {
 
     std::cout
         << "  Mean    : "
-        << median(means)
+        << format_latency(median(means), tsc_calibration)
         << " TSC ticks\n";
 
     std::cout
         << "  P50     : "
-        << median_u64(p50s)
+        << format_latency(median_u64(p50s), tsc_calibration)
         << '\n';
 
     std::cout
         << "  P90     : "
-        << median_u64(p90s)
+        << format_latency(median_u64(p90s), tsc_calibration)
         << '\n';
 
     std::cout
         << "  P99     : "
-        << median_u64(p99s)
+        << format_latency(median_u64(p99s), tsc_calibration)
         << '\n';
 
     std::cout
         << "  P99.9   : "
-        << median_u64(p999s)
+        << format_latency(median_u64(p999s), tsc_calibration)
         << '\n';
 
     std::cout
         << "  P99.99  : "
-        << median_u64(p9999s)
+        << format_latency(median_u64(p9999s), tsc_calibration)
         << '\n';
 
     std::cout
         << "  Max     : "
-        << median_u64(maxs)
+        << format_latency(median_u64(maxs), tsc_calibration)
         << '\n';
 
     std::cout

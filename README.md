@@ -125,6 +125,30 @@ ctest --test-dir build --output-on-failure
 
 ## Benchmark Results
 
+The benchmark was run with the producer and consumer pinned to CPUs 2 and 4.
+
+Latency / RTT
+
+TSC frequency: 3.792896 GHz
+
+P50     : 646 TSC ticks (170.324 ns)
+P90     : 722 TSC ticks (190.362 ns)
+P99     : 988 TSC ticks (260.496 ns)
+P99.9   : 2850 TSC ticks (751.431 ns)
+P99.99  : 10374 TSC ticks (2.735 us)
+Max     : 156446 TSC ticks (41.249 us)
+
+Latency is measured as round-trip time using two SPSC queues in a ping-pong configuration.
+
+Throughput
+
+Median across 5 runs: 153.6 Mmsg/s
+
+Warm-up operations: 5,000,000
+
+Measured operations: 50,000,000
+
+These results are a baseline for the specific hardware, operating system, compiler, CPU affinity, and benchmark configuration. They should not be interpreted as universal or production-HFT performance claims.
 
 
 ## Notes
