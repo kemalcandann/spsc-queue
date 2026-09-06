@@ -123,32 +123,32 @@ ctest --test-dir build --output-on-failure
     └── spsc_queue_tests.cpp
 ```
 
-## Benchmark Results
+## 📊 Benchmark Results
 
-The benchmark was run with the producer and consumer pinned to CPUs 2 and 4.
+> [!NOTE]
+> **Configuration:** Producer and consumer pinned to **CPU 2** and **CPU 4**. Latency is measured as **Round-Trip Time (RTT)** using two SPSC queues in a ping-pong setup. (*Host TSC Frequency: 3.792896 GHz*).
 
-Latency / RTT
+### ⏱️ Latency (Round-Trip Time)
 
-TSC frequency: 3.792896 GHz
+| Percentile | TSC Ticks | Latency |
+| :--- | :---: | :---: |
+| **P50** | 646 | `170.32 ns` |
+| **P90** | 722 | `190.36 ns` |
+| **P99** | 988 | `260.50 ns` |
+| **P99.9** | 2,850 | `751.43 ns` |
+| **P99.99** | 10,374 | `2.74 µs` |
+| **Max** | 156,446 | `41.25 µs` |
 
-P50     : 646 TSC ticks (170.324 ns)
-P90     : 722 TSC ticks (190.362 ns)
-P99     : 988 TSC ticks (260.496 ns)
-P99.9   : 2850 TSC ticks (751.431 ns)
-P99.99  : 10374 TSC ticks (2.735 us)
-Max     : 156446 TSC ticks (41.249 us)
+### 🚀 Throughput
 
-Latency is measured as round-trip time using two SPSC queues in a ping-pong configuration.
+| Metric | Value |
+| :--- | :--- |
+| **Median Throughput** *(5 runs)* | **`153.6 Mmsg/s`** |
+| **Warm-up Operations** | `5,000,000` |
+| **Measured Operations** | `50,000,000` |
 
-Throughput
-
-Median across 5 runs: 153.6 Mmsg/s
-
-Warm-up operations: 5,000,000
-
-Measured operations: 50,000,000
-
-These results are a baseline for the specific hardware, operating system, compiler, CPU affinity, and benchmark configuration. They should not be interpreted as universal or production-HFT performance claims.
+> [!IMPORTANT]
+> **Baseline Disclaimer:** These results establish an un-tuned baseline for the specific hardware, operating system, compiler, CPU affinity, and benchmark configuration. They should not be interpreted as universal or production-HFT performance claims.
 
 
 ## Notes
